@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tabla de Productos</title>
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid black;
+      padding: 60px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tabla de Productos</h1>
+  <table id="tablaProductos">
+    <thead>
+      <tr>
+        <th>Foto</th>
+        <th>Producto</th>
+        <th>Marca</th>
+        <th>Precio</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    fetch('productos.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Error en la respuesta de la solicitud.');
+        }
+        return response.text();
+      })
+      .then(data => {
+        const productos = JSON.parse(data);
+        const tablaProductos = document.getElementById('tablaProductos');
+
+        productos.forEach(producto => {
+          const fila = document.createElement('tr');
+          const foto = document.createElement('td');
+          const atributo1 = document.createElement('td');
+          const atributo2 = document.createElement('td');
+          const atributo3 = document.createElement('td');
+
+          foto.innerHTML = `<img src="${producto.foto}" width="100" height="100">`;
+          atributo1.textContent = producto.atributo1;
+          atributo2.textContent = producto.atributo2;
+          atributo3.textContent = producto.atributo3;
+
+          fila.appendChild(foto);
+          fila.appendChild(atributo1);
+          fila.appendChild(atributo2);
+          fila.appendChild(atributo3);
+          tablaProductos.appendChild(fila);
+        });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  </script>
+</body>
+</html>
